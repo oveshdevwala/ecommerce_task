@@ -16,21 +16,19 @@ class ProductView extends StatelessWidget {
               return Center(child: Text(state.error ?? 'No Product'));
             }
             if (state.status == ProductHomeStatus.success) {
+              List<ProductModel> product = [];
 
-              List<ProductModel> product=[];
-
-              if(state.searchedProducts == null){
-                product=state.products!.products!;
-              }else{
-                product=state.searchedProducts!.products!;
-
+              if (state.query == null || state.query!.isEmpty) {
+                product = state.products!.products!;
+              } else {
+                product = state.searchedProducts!.products!;
               }
               return Padding(
                 padding: const EdgeInsets.all(8.0).r,
                 child: GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 0.6,
-                  children:product
+                  children: product
                       .map((e) => ProductCard(
                             product: e,
                           ))

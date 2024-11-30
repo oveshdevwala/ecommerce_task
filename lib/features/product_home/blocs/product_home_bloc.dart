@@ -55,13 +55,16 @@ class ProductHomeBloc extends Bloc<ProductHomeEvent, ProductHomeState> {
                   .contains(event.query.toLowerCase()) ||
               (element.description ?? "")
                   .toLowerCase()
+                  .contains(event.query.toLowerCase()) ||
+              (element.brand ?? "")
+                  .toLowerCase()
                   .contains(event.query.toLowerCase()))
           .toList();
 
       if (event.query.isNotEmpty) {
         emit(state.copyWith(
             searchedProducts:
-                ProductsModel(filteredList, filteredList.length, 0, 30)));
+                ProductsModel(filteredList, filteredList.length, 0, 30),query: event.query));
       }
     }
   }

@@ -95,6 +95,7 @@ class ProductCard extends StatelessWidget {
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
                     maxLines: 1,
                   ),
+                  //
                   if (product.brand != null)
                     Text(
                       product.brand!,
