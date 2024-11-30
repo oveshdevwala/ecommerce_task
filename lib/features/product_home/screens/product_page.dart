@@ -1,5 +1,7 @@
 import 'package:ecommerce_task/features/cart/cart.dart';
+import 'package:ecommerce_task/features/product_home/models/model.dart';
 import 'package:ecommerce_task/features/product_home/product_home.dart';
+import 'package:ecommerce_task/injectable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -8,23 +8,27 @@ class ProductHomeState extends Equatable {
     required this.status,
     this.error,
     this.products,
+    this.searchedProducts,
   });
 
   final ProductHomeStatus status;
   final String? error;
   final ProductsModel? products;
+  final ProductsModel? searchedProducts;
   @override
-  List<Object?> get props => [status, error, products];
+  List<Object?> get props => [status, error, products,searchedProducts];
 
   ProductHomeState copyWith({
     ProductHomeStatus? status,
     String? error,
     ProductsModel? products,
+    ProductsModel? searchedProducts,
   }) {
     return ProductHomeState(
       status: status ?? this.status,
       error: error ?? this.error,
       products: products ?? this.products,
+      searchedProducts: searchedProducts ?? this.searchedProducts,
     );
   }
 }

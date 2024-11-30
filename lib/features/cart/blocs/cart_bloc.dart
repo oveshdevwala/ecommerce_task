@@ -36,7 +36,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       double totalDiscount = 0; // Example discount value.
 
       for (var each in allCart) {
-        totalPrice += each.price * each.quantity;
+        final finalPrice = each.price-(each.price * each.discountPercentage / 100);
+        totalPrice +=
+           finalPrice * each.quantity;
         totalDiscount += each.discountPercentage;
       }
       emit(state.copyWith(

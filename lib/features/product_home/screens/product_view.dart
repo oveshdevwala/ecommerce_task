@@ -16,12 +16,21 @@ class ProductView extends StatelessWidget {
               return Center(child: Text(state.error ?? 'No Product'));
             }
             if (state.status == ProductHomeStatus.success) {
+
+              List<ProductModel> product=[];
+
+              if(state.searchedProducts == null){
+                product=state.products!.products!;
+              }else{
+                product=state.searchedProducts!.products!;
+
+              }
               return Padding(
                 padding: const EdgeInsets.all(8.0).r,
                 child: GridView.count(
                   crossAxisCount: 2,
                   childAspectRatio: 0.6,
-                  children: state.products!.products!
+                  children:product
                       .map((e) => ProductCard(
                             product: e,
                           ))
@@ -35,11 +44,40 @@ class ProductView extends StatelessWidget {
   }
 
   AppBar _productHomeAppBar(BuildContext context) => AppBar(
-        title: Text(
-          'Catalogue',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: 18.sp),
+        title: InkWell(
+          onTap: () {
+            getIt<ProductHomeBloc>().add(ProductHomeFetchEvents());
+          },
+          child: Text(
+            'Catalogue',
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(fontSize: 18.sp),
+          ),
         ),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: Size(1.sw, 40),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4),
+            child: TextField(
+              onChanged: (value) {
+                if (value.isNotEmpty) {
+                  getIt<ProductHomeBloc>()
+                      .add(ProductFetchBySearchEvent(value));
+                }
+              },
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 12).w,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12).r,
+                ),
+                hintText: 'Search Here',
+              ),
+            ),
+          ),
+        ),
         actions: [
           BlocSelector<CartBloc, CartState, int>(
             selector: (state) {

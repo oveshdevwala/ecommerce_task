@@ -134,6 +134,13 @@ class CartView extends StatelessWidget {
       ),
       bottomNavigationBar: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
+          if (state.cartItems.isEmpty) {
+            return Center(
+                child: Text(
+              'Empty Cart',
+              style: Theme.of(context).textTheme.titleLarge,
+            ));
+          }
           if (state.status == CartStatus.success) {
             return DecoratedBox(
               decoration: BoxDecoration(

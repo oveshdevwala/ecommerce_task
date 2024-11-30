@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:ecommerce_task/features/product_home/models/model.dart';
 import 'package:ecommerce_task/features/product_home/models/products_model.dart';
 import 'package:ecommerce_task/features/product_home/product_repository/repository.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class ProductHomeBloc extends Bloc<ProductHomeEvent, ProductHomeState> {
           status: ProductHomeStatus.initial,
         )) {
     on<ProductHomeFetchEvents>(_productFetchEvent);
+    on<ProductFetchBySearchEvent>(_productFetchBySearchEvent);
   }
 
   FutureOr<void> _productFetchEvent(
@@ -40,6 +42,27 @@ class ProductHomeBloc extends Bloc<ProductHomeEvent, ProductHomeState> {
     } catch (e) {
       emit(state.copyWith(
           status: ProductHomeStatus.failure, error: e.toString()));
+    }
+  }
+
+  FutureOr<void> _productFetchBySearchEvent(
+      ProductFetchBySearchEvent event, Emitter<ProductHomeState> emit) async {
+    if (state.status == ProductHomeStatus.success) {
+      List<ProductModel> filteredList = state.products!.products!
+          .where((element) =>
+              (element.title ?? "")
+                  .toLowerCase()
+                  .contains(event.query.toLowerCase()) ||
+              (element.description ?? "")
+                  .toLowerCase()
+                  .contains(event.query.toLowerCase()))
+          .toList();
+
+      if (event.query.isNotEmpty) {
+        emit(state.copyWith(
+            searchedProducts:
+                ProductsModel(filteredList, filteredList.length, 0, 30)));
+      }
     }
   }
 }
